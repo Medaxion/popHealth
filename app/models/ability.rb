@@ -1,3 +1,5 @@
+require 'hds/measure.rb'
+
 class Ability
   include CanCan::Ability
 

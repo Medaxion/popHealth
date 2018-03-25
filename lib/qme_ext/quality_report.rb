@@ -30,6 +30,7 @@ module QME
                                              'effective_start_date' => value['effective_start_date'],
                                              'effective_date' => value['effective_date'], 'test_id' => value['test_id'],
                                              'oid_dictionary' => oid_dictionary)
+	  Rails.logger.info("about to map for #{id}")
           map.map_record_into_measure_groups(id)
         end
       end

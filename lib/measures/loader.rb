@@ -49,7 +49,7 @@ module Measures
       end
       update_system_js
       qcache.destroy
-      pcache.destroy 
+      #pcache.destroy 
     end
 
 

@@ -124,7 +124,7 @@ PopHealth::Application.routes.draw do
       end
     end
 
-    resources :measures
+    resources :measures, controller: 'blah'
 
     resources :queries do
        member do

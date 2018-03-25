@@ -5,17 +5,20 @@ class ImportArchiveJob
     @file = options['file'].path
     @current_user = options['user']
     @practice = options['practice']
+    puts "Initializing"
   end
 
   def before
+    puts "Before"
     Log.create(:username => @current_user.username, :event => 'record import')
   end
 
   def perform
+    puts "Perform"
+    puts @file
     begin
     missing_patients = BulkRecordImporter.import_archive(File.new(@file), nil, @practice)
     rescue => e
-      puts Date.new+':'+e.backtrace
       raise
     end
     missing_patients.each do |id|
@@ -24,8 +27,9 @@ class ImportArchiveJob
   end
 
   def after
-    File.delete(@file)
-    HealthDataStandards::CQM::QueryCache.delete_all
-    PatientCache.delete_all    
+    puts "After"
+    #File.delete(@file)
+    #HealthDataStandards::CQM::QueryCache.delete_all
+    #PatientCache.delete_all    
   end
 end

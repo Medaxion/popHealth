@@ -77,7 +77,7 @@ module Api
       authorize! :create, Record
       
       practice = get_practice_parameter(params[:practice_id], params[:practice_name])
-      
+
       success = BulkRecordImporter.import(params[:file], {}, practice)
       if success
         log_api_call LogAction::ADD, "Patient record import", true

@@ -75,26 +75,31 @@ class BulkRecordImporter < HealthDataStandards::Import::BulkRecordImporter
     providers = []
     root_element_name = doc.root.name
 
+    Rails.logger.info("Root element name #{root_element_name}")
     if root_element_name == 'ClinicalDocument'
       doc.root.add_namespace_definition('cda', 'urn:hl7-org:v3')
       doc.root.add_namespace_definition('sdtc', 'urn:hl7-org:sdtc')
 
       if doc.at_xpath("/cda:ClinicalDocument/cda:templateId[@root='2.16.840.1.113883.3.88.11.32.1']")
+        Rails.logger.info("Parsing as c32")
         patient_data = HealthDataStandards::Import::C32::PatientImporter.instance.parse_c32(doc)
       elsif doc.at_xpath("/cda:ClinicalDocument/cda:templateId[@root='2.16.840.1.113883.10.20.22.1.2']")
+        Rails.logger.info("Parsing as CCDA")
         patient_data = HealthDataStandards::Import::CCDA::PatientImporter.instance.parse_ccda(doc)
       elsif doc.at_xpath("/cda:ClinicalDocument/cda:templateId[@root='2.16.840.1.113883.10.20.24.1.2']")
         begin
+          Rails.logger.info("Parsing as Cat1")
           patient_data = HealthDataStandards::Import::Cat1::PatientImporter.instance.parse_cat1(doc)
+          Rails.logger.info("Patient Data is #{patient_data}")
         rescue Exception => e
           patient_role_element = doc.at_xpath('/cda:ClinicalDocument/cda:recordTarget/cda:patientRole')
           patient_element = patient_role_element.at_xpath('./cda:patient')
           first = patient_element.at_xpath('cda:name/cda:given').text.upcase
           last = patient_element.at_xpath('cda:name/cda:family').text.upcase
-          puts "UNABLE TO IMPORT PATIENT RECORD FOR #{first} #{last}"
+          Rails.logger.info("UNABLE TO IMPORT PATIENT RECORD FOR #{first} #{last} #{e.message}")
           Delayed::Worker.logger.info("UNABLE TO IMPORT PATIENT RECORD FOR #{first} #{last}")
           Delayed::Worker.logger.info(e.message)
-        end 
+        end
       else
         STDERR.puts("Unable to determinate document template/type of CDA document")
         return {status: 'error', message: "Document templateId does not identify it as a C32 or CCDA", status_code: 400}
@@ -208,3 +213,4 @@ class BulkRecordImporter < HealthDataStandards::Import::BulkRecordImporter
     record.save
   end
 end
+

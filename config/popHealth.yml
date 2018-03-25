@@ -17,14 +17,14 @@ defaults: &defaults
   # add job management link
   job_management_enabled: true
   # title of the practice
-  practice_name: 'General Hospital'
+  practice_name: 'Medaxion'
   disable_provider_filters: false
   ccr_system_name: popHealth
   # force the system to allow HTTP connections
   force_unsecure_communications: true
   use_map_reduce_prefilter: true
-  enable_map_reduce_rationale: false
-  enable_map_reduce_logging: false
+  enable_map_reduce_rationale: true
+  enable_map_reduce_logging: true
   #use practice-based system instead of provider opml hierarchy
   use_opml_structure: false
   
@@ -35,7 +35,7 @@ defaults: &defaults
   show_measure_baseline_report: false
 
   # Enable/disable csrf for API by default is true
-  enable_csrf_for_apis: true
+  enable_csrf_for_apis: false
 
   # Define the ranges to color-code the provider's results in the baseline report
   measure_baseline_ranges:
@@ -70,8 +70,8 @@ defaults: &defaults
       :extension:
     :authors:
     - :ids:
-      - :root: author_root
-        :extension: author_extension
+      - :root: 1.2.3
+        :extension: 123
       :device:
         :name: 'PopHealth'
         :model: '5.0.0'
@@ -80,29 +80,29 @@ defaults: &defaults
       :time:
       :organization:
         :ids:
-        - :root: authors_organization_root
-          :extension: authors_organization_ext
+        - :root: 1.2.3
+          :extension: 123
         :name: ''
     :information_recipient:
       :identifier:
-        :root:
-        :extension: information_recipient_ext
+        :root: 1.2.3
+        :extension: 123
     :custodian:
       :ids:
-      - :root: custodian_root
-        :extension: custodian_ext
+      - :root: 1.2.3
+        :extension: 123
       :person:
         :given: ''
         :family: ''
       :organization:
         :ids:
-        - :root: custodian_rganization_root
-          :extension: custodian_organization_ext
+        - :root: 1.2.3
+          :extension: 123
         :name: ''
     :legal_authenticator:
       :ids:
-      - :root: legal_authenticator_root
-        :extension: legal_authenticator_ext
+      - :root: 1.2.3
+        :extension: 123
       :addresses: []
       :telecoms: []
       :time:
@@ -111,8 +111,8 @@ defaults: &defaults
         :family:
       :organization:
         :ids:
-        - :root: legal_authenticator_org_root
-          :extension: legal_authenticator_org_ext
+        - :root: 1.2.3
+          :extension: 123
         :name: ''
 
 development:

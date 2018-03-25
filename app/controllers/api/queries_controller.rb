@@ -301,7 +301,7 @@ module Api
                                             :rationale => namekey, :user => current_user['_id'])
         }
         # new let page recalc
-        PatientCache.delete_all
+        #PatientCache.delete_all
         # force recalculate has no effect if the patients are cached !!!!!!!!!!!!!!
         QME::QualityReport.where({measure_id: params[:id]}).each do |qc|
           # updating nested attributes in Mongoid appears lame
@@ -344,7 +344,7 @@ module Api
     def delete_patient_cache
       log_admin_controller_call LogAction::DELETE, "Remove caches"
       HealthDataStandards::CQM::QueryCache.delete_all
-      PatientCache.delete_all
+      #PatientCache.delete_all
       Mongoid.default_client["rollup_buffer"].drop()
     end
 
