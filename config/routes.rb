@@ -76,7 +76,7 @@ PopHealth::Application.routes.draw do
         get :search
       end
     end
-    
+
     resources :measure_baselines
     resources :practices
     resources :teams
@@ -84,6 +84,7 @@ PopHealth::Application.routes.draw do
       resource :caches do
         collection do
           get :count
+          delete :reset
         end
       end
       resource :patients do
@@ -127,9 +128,9 @@ PopHealth::Application.routes.draw do
       end
     end
 
-    resources :measures do 
-      collection do 
-	get :calculated
+    resources :measures do
+      collection do
+	      get :calculated
       end
     end
 
