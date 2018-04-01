@@ -112,7 +112,7 @@ module Api
 
 
     api :GET, "/calculated", "Gets the calculated status for the measures"
-    param :measure_ids, String[], :desc => 'The HQMF id for the CQM to get the calculated status', :required => true
+    param :measure_ids, String, :desc => 'Array of the HQMF id for the CQM to get the calculated status', :required => true
     def calculated
       authorize! :update, HealthDataStandards::CQM::Measure
       statuses = []
