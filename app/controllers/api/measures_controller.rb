@@ -40,16 +40,27 @@ module Api
       measure_ids = params[:measure_ids]
 
       measure_ids.each do |measure_id|
-	      Rails.logger.info("Looking at measure_id #{measure_id}")
-        reports = QME::QualityReport.where(measure_id: measure_id)
-        reports.each do |report|
-	      Rails.logger.info("Adding status for report #{report['measure_id']}")
-          statuses << {
-            hqmf_id: report.measure_id,
-            sub_id: report.sub_id,
-            calculated: report.calculated?,
-	    calculated_on: report.calculation_time
-          }
+        Rails.logger.info("Looking at measure_id #{measure_id}")
+        measures = HealthDataStandards::CQM::Measure.where({"hqmf_id" => measure_id })
+
+        if measures.blank?
+          statuses << { hqmf_id: measure_id, calculated: false }
+        else
+          reports = QME::QualityReport.where(measure_id: measure_id)
+
+          if reports.blank?
+            statuses << { hqmf_id: measure_id, calculated: false }
+          else
+            reports.each do |report|
+            Rails.logger.info("Adding status for report #{report['measure_id']}")
+              statuses << {
+                hqmf_id: report.measure_id,
+                sub_id: report.sub_id,
+                calculated: report.calculated?,
+                calculated_on: report.calculation_time
+              }
+            end
+          end
         end
       end
       Rails.logger.info("Statuses are #{statuses}")
