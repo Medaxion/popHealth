@@ -32,24 +32,27 @@ module Api
       render :json=> measure
     end
 
-    api :GET, "/calculated", "Gets the calculated status for the measures"
-    param :measure_ids, String, :desc => 'Array of the HQMF id for the CQM to get the calculated status', :required => true
+    api :GET, "/measures/calculated", "Gets the calculated status for the measures"
+    #param :measure_ids, :desc => 'Array of the HQMF id for the CQM to get the calculated status', :required => true
     def calculated
       log_api_call LogAction::VIEW, "View measure"
       statuses = []
       measure_ids = params[:measure_ids]
 
       measure_ids.each do |measure_id|
-        measures = QME::QualityReport.where(measure_id: measure_id)
-        measures.each do |measure|
+	Rails.logger.info("Looking at measure_id #{measure_id}")
+        reports = QME::QualityReport.where(measure_id: measure_id)
+        reports.each do |report|
+	  Rails.logger.info("Adding status for report #{report['measure_id']}")
           statuses << {
-            hqmf_id: measure.hqmf_id,
-            sub_id: measure.sub_id,
-            calculated: qr.calculated?
+            hqmf_id: report.measure_id,
+            sub_id: report.sub_id,
+            calculated: report.calculated?
           }
         end
       end
-      render json: stauses
+      Rails.logger.info("Statuses are #{statuses}")
+      render json: statuses
     end
 
     api :POST, "/measures", "Load a measure into popHealth"
