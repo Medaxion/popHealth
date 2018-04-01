@@ -47,7 +47,8 @@ module Api
           statuses << {
             hqmf_id: report.measure_id,
             sub_id: report.sub_id,
-            calculated: report.calculated?
+            calculated: report.calculated?,
+	    calculated_on: report.calculation_time
           }
         end
       end
