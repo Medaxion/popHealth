@@ -119,6 +119,9 @@ PopHealth::Application.routes.draw do
       end
     end
     resources :patients do
+      collection do
+	post :parse
+      end
       member do
         get :results
       end

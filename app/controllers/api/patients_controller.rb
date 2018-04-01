@@ -88,6 +88,18 @@ module Api
       end
     end
 
+    api :POST, "/patients/parse", "Parse an xml file and return json data"
+    formats ['xml']
+    param :xml, nil, :desc => "The QRDA Cat I file", :required => true
+    description "Parse Cat I XML file and return JSON data that will be imported"
+    def parse
+      #Logic comes from the BulkRecordImport.import method
+      doc = Nokogiri::XML(params[:xml])
+      doc.root.add_namespace_definition('cda', 'urn:hl7-org:v3')
+      doc.root.add_namespace_definition('sdtc', 'urn:hl7-org:sdtc')
+      render :json => HealthDataStandards::Import::Cat1::PatientImporter.instance.parse_cat1(doc).as_json
+    end
+
     def toggle_excluded
       # TODO - figure out security constraints around manual exclusions -- this should probably be built around
       # the security constraints for queries
