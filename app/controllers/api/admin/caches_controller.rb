@@ -29,7 +29,18 @@ module Api
         render status: 200, text: 'Server caches have been emptied.'
       end
 
-      private 
+      api :DELETE, "/admin/caches/reset", "Reset pophealth records for recalculation"
+      def reset
+        log_admin_api_call LogAction::DELETE, "Reset database"
+        Record.delete_all
+        Delayed::Job.delete_all
+        Log.delete_all
+        PatientCache.delete_all
+        HealthDataStandards::CQM::QueryCache.delete_all
+        QME::QualityReport.delete_all
+      end
+
+      private
 
       def validate_authorization!
         authorize! :admin, :users
