@@ -120,7 +120,8 @@ PopHealth::Application.routes.draw do
     end
     resources :patients do
       collection do
-	post :parse
+        post :parse
+        get :calculated
       end
       member do
         get :results
