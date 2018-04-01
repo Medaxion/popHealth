@@ -32,6 +32,26 @@ module Api
       render :json=> measure
     end
 
+    api :GET, "/calculated", "Gets the calculated status for the measures"
+    param :measure_ids, String, :desc => 'Array of the HQMF id for the CQM to get the calculated status', :required => true
+    def calculated
+      log_api_call LogAction::VIEW, "View measure"
+      statuses = []
+      measure_ids = params[:measure_ids]
+
+      measure_ids.each do |measure_id|
+        measures = QME::QualityReport.where(measure_id: measure_id)
+        measures.each do |measure|
+          statuses << {
+            hqmf_id: measure.hqmf_id,
+            sub_id: measure.sub_id,
+            calculated: qr.calculated?
+          }
+        end
+      end
+      render json: stauses
+    end
+
     api :POST, "/measures", "Load a measure into popHealth"
     description "The uploaded measure must be in the popHealth JSON measure format. This will not accept HQMF definitions of measures."
     def create
@@ -108,27 +128,6 @@ module Api
       rescue => e
         log_api_call LogAction::UPDATE, "Failed to finalize measure, with error #{e.to_s}"
         render text: e.to_s, status: 500
-    end
-
-
-    api :GET, "/calculated", "Gets the calculated status for the measures"
-    param :measure_ids, String, :desc => 'Array of the HQMF id for the CQM to get the calculated status', :required => true
-    def calculated
-      authorize! :update, HealthDataStandards::CQM::Measure
-      statuses = []
-      measure_ids = params[:measure_ids]
-
-      measure_ids.each do |measure_id|
-        measures = QME::QualityReport.where(measure_id: measure_id)
-        measures.each do |measure|
-          statuses << {
-            hqmf_id: measure.hqmf_id,
-            sub_id: measure.sub_id,
-            calculated: qr.calculated?
-          }
-        end
-      end
-      render json: statuses
     end
 
   private
