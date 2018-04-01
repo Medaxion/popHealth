@@ -38,6 +38,7 @@ module Api
         PatientCache.delete_all
         HealthDataStandards::CQM::QueryCache.delete_all
         QME::QualityReport.delete_all
+        render status: 200, text: 'Pophealth has been reset and is ready for calculation'
       end
 
       private
