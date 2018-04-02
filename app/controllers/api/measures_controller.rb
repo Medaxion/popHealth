@@ -25,7 +25,7 @@ module Api
 
     api :GET, "/measures/selected", "Get a list of selected measures"
     param_group :pagination, Api::PatientsController
-    def selected_measures
+    def selected
       log_api_call LogAction::VIEW, "Get a list of selected measures"
       measures = HealthDataStandards::CQM::Measure.where(@filter)
       measure_hashes = measures.map(&:to_hash)
