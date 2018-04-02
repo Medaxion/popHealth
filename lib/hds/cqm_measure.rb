@@ -3,6 +3,15 @@ module HealthDataStandards
     class Measure
       include Mongoid::Document
       field :lower_is_better, type: Boolean
+
+      has_and_belongs_to_many :value_sets, class_name: 'HealthDataStandards::SVS::ValueSet', inverse_of: nil, primary_key: 'oid', foreign_key: 'oids'
+
+      def value_sets_to_hashes
+        value_sets.inject({}) do |h2,vs|
+          h2[vs.oid] = vs.concepts.map { |c| c.attributes.slice('code', 'code_system') }; h2
+        end
+      end
+
       # this is called in hds Measure but does not resolve correctly
       def data_criteria
         return nil unless self['hqmf_document'] and self['hqmf_document']['data_criteria']
