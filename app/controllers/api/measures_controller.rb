@@ -23,6 +23,15 @@ module Api
       render json: paginate(api_measures_url, measures), each_serializer: HealthDataStandards::CQM::MeasureSerializer
     end
 
+    api :GET, "/measures/selected", "Get a list of selected measures"
+    param_group :pagination, Api::PatientsController
+    def selected_measures
+      log_api_call LogAction::VIEW, "Get a list of selected measures"
+      measures = HealthDataStandards::CQM::Measure.where(@filter)
+      measure_hashes = measures.map(&:to_hash)
+      render json: measure_hashes.to_json
+    end
+
     api :GET, "/measures/:id", "Get an individual clinical quality measure"
     param :id, String, :desc => 'The HQMF id for the CQM to calculate', :required => true
     param :sub_id, String, :desc => 'The sub id for the CQM to calculate. This is popHealth specific.', :required => false

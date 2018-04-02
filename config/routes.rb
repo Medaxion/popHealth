@@ -130,7 +130,8 @@ PopHealth::Application.routes.draw do
 
     resources :measures do
       collection do
-	      get :calculated
+        get :calculated
+        get :selected
       end
     end
 

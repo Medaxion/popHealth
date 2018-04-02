@@ -17,6 +17,7 @@ module HealthDataStandards
         return nil unless self['hqmf_document'] and self['hqmf_document']['data_criteria']
         self['hqmf_document']['data_criteria'].map { |key, val| { key => val } }
       end
+
       # replaced with the one from cypress for compatibility with their baroque processing
       # def data_criteria
       #   self.hqmf_document['data_criteria']
@@ -34,6 +35,17 @@ module HealthDataStandards
       #   @crit
       # end
 
+      def to_hash
+        {
+          :name =>  self[:name],
+          :cms_id => self[:cms_id],
+          :nqf_id => self[:nqf_id],
+          :hqmf_id => self[:hqmf_id],
+          :hqmf_set_id => self[:hqmf_set_id],
+          :hqmf_version_number => self[:hqmf_version_number],
+          :value_sets => self.value_sets_to_hashes
+        }
+      end
     end
   end
 end
