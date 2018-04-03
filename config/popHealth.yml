@@ -66,8 +66,8 @@ defaults: &defaults
     api_url: https://vsac.nlm.nih.gov/vsac/ws/RetrieveValueSet
   cda_header:
     :identifier:
-      :root:
-      :extension:
+      :root: 1.2.3
+      :extension: 123
     :authors:
     - :ids:
       - :root: 1.2.3
