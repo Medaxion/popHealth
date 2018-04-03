@@ -71,7 +71,7 @@ defaults: &defaults
     :authors:
     - :ids:
       - :root: 1.2.3
-        :extension: 111
+        :extension: 111111
       :device:
         :name: 'PopHealth'
         :model: '5.0.0'
@@ -85,7 +85,7 @@ defaults: &defaults
         :name: ''
     :information_recipient:
       :identifier:
-        :root:
+        :root: 1.2.3
         :extension: 123
     :custodian:
       :ids:
