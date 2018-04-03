@@ -70,8 +70,8 @@ defaults: &defaults
       :extension:
     :authors:
     - :ids:
-      - :root: author_root
-        :extension: author_extension
+      - :root: 1.2.3
+        :extension: 123
       :device:
         :name: 'PopHealth'
         :model: '5.0.0'
@@ -80,8 +80,8 @@ defaults: &defaults
       :time:
       :organization:
         :ids:
-        - :root: authors_organization_root
-          :extension: authors_organization_ext
+        - :root: 1.2.3
+          :extension: 123
         :name: ''
     :information_recipient:
       :identifier:
@@ -89,20 +89,20 @@ defaults: &defaults
         :extension: information_recipient_ext
     :custodian:
       :ids:
-      - :root: custodian_root
-        :extension: custodian_ext
+      - :root: 1.2.3
+        :extension: 123
       :person:
         :given: ''
         :family: ''
       :organization:
         :ids:
-        - :root: custodian_rganization_root
-          :extension: custodian_organization_ext
+        - :root: 1.2.3
+          :extension: 123
         :name: ''
     :legal_authenticator:
       :ids:
-      - :root: legal_authenticator_root
-        :extension: legal_authenticator_ext
+      - :root: 1.2.3
+        :extension: 123
       :addresses: []
       :telecoms: []
       :time:
@@ -111,8 +111,8 @@ defaults: &defaults
         :family:
       :organization:
         :ids:
-        - :root: legal_authenticator_org_root
-          :extension: legal_authenticator_org_ext
+        - :root: 1.2.3
+          :extension: 123
         :name: ''
 
 development:
