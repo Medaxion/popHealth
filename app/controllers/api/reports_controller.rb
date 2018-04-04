@@ -131,6 +131,8 @@ module Api
       end
       end_date = params["effective_date"] || current_user.effective_date || Time.gm(2015, 12, 31)
       start_date = params["effective_start_date"] || current_user.effective_start_date || end_date.years_ago(1)
+      start_date = start_date.to_i
+      end_date = end_date.to_i
       c4h = C4Helper::Cat1ZipFilter.new(measures, start_date, end_date)
       c4h.pluck(filepath, patients)
       File.open(filepath, 'r') do |f|
