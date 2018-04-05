@@ -78,6 +78,15 @@ module Api
           end
           provider_filter['filters.providers'] = params[:provider_id] if params[:provider_id].present?
         end
+
+        Rails.logger.info("Cat 3 Version is #{cat3ver}")
+        Rails.logger.info("Effective Date is #{effective_date}")
+        Rails.logger.info("Effective Start Date is #{Time.at(effective_start_date.to_i)}")
+        Rails.logger.info("End Date #{end_date}")
+        Rails.logger.info("Provider Filter #{provider_filter}")
+        Rails.logger.info("Filter #{filter}")
+        Rails.logger.info("Providers #{providers}")
+
         xml = exporter.export(HealthDataStandards::CQM::Measure.top_level.where(filter),
                               generate_header(providers),
                               effective_date.to_i,
