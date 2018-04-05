@@ -100,7 +100,7 @@ module Api
         measure = measures.first
         Rails.logger.info("Measure is #{measure}")
         results = {}
-        results[measure['hqmf_id']] = HealthDataStandards::CQM::QueryCache.aggregate_measure(measure['hqmf_id'], effective_date, filter, nil)
+        results[measure['hqmf_id']] = HealthDataStandards::CQM::QueryCache.aggregate_measure(measure['hqmf_id'], effective_date, nil, nil)
         result = results[measure['hqmf_id']]
         Rails.logger.info("Result is #{result}")
         populations = result.populations
@@ -110,6 +110,22 @@ module Api
           "Value is #{population.value}"
           "Rounded Value is #{population.value.round}"
         end
+
+        measure_id = measure['hqmf_id']
+        Rails.logger.info("Measure Id is #{measure_id}")
+
+        #This comes from QueryCache.aggregate_measure
+        aggregate_count = HealthDataStandards::CQM::AggregateCount.new(measure_id)
+        query_hash = {'measure_id' => measure_id, 'test_id' => nil}
+        cache_entries = HealthDataStandards::CQM::QueryCache.where(measure_id: measure_id)
+        aggregate_count = HealthDataStandards::CQM::AggregateCount.new(measure_id)
+
+        cache_entries.each do |cache_entry|
+          Rails.logger.info("Adding cache_entry #{cache_entry}")
+          aggregate_count.add_entry(cache_entry)
+        end
+
+        Rails.logger.info("Aggregate Count is #{aggregate_count}")
 
         # FileUtils.mkdir('results') if !File.exist?('results')
         # File.open('results/'+fname, 'w') { |f| f.write(xml) }
