@@ -103,11 +103,14 @@ module Api
         results[measure['hqmf_id']] = HealthDataStandards::CQM::QueryCache.aggregate_measure(measure['hqmf_id'], effective_date, filter, nil)
         result = results[measure['hqmf_id']]
         Rails.logger.info("Result is #{result}")
-        population = result.population
-        Rails.logger.info("Population is #{population}")
+        binding.pry
+        populations = result.populations
+        Rails.logger.info("Populations are #{populations}")
 
-        "Value is #{population.value}"
-        "Rounded Value is #{population.value.round}"
+        populations.each do |population|
+          "Value is #{population.value}"
+          "Rounded Value is #{population.value.round}"
+        end
 
         # FileUtils.mkdir('results') if !File.exist?('results')
         # File.open('results/'+fname, 'w') { |f| f.write(xml) }
