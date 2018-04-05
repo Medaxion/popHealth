@@ -99,6 +99,7 @@ module Api
 
         measure = measures.first
         Rails.logger.info("Measure is #{measure}")
+        results = {}
         results[measure['hqmf_id']] = HealthDataStandards::CQM::QueryCache.aggregate_measure(measure['hqmf_id'], effective_date, filter, nil)
         result = results[measure['hqmf_id']]
         Rails.logger.info("Result is #{result}")
