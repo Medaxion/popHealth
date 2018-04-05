@@ -86,6 +86,8 @@ module Api
         Rails.logger.info("Provider Filter #{provider_filter}")
         Rails.logger.info("Filter #{filter}")
         Rails.logger.info("Providers #{providers}")
+        measures = HealthDataStandards::CQM::Measure.top_level.where(filter)
+        Rails.logger.info("Measures are #{measures}")
 
         xml = exporter.export(HealthDataStandards::CQM::Measure.top_level.where(filter),
                               generate_header(providers),
