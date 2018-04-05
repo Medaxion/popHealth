@@ -94,6 +94,18 @@ module Api
                               end_date,
                               cat3ver,
                               provider_filter)
+
+        measure = measures.first
+        Rails.logger.info("Measure is #{measure}")
+        results[measure['hqmf_id']] = HealthDataStandards::CQM::QueryCache.aggregate_measure(measure['hqmf_id'], effective_date, filter, nil)
+        result = results[measure['hqmf_id']]
+        Rails.logger.info("Result is #{result}")
+        population = result.population
+        Rails.logger.info("Population is #{population}")
+
+        "Value is #{population.value}"
+        "Rounded Value is #{population.value.round}"
+
         # FileUtils.mkdir('results') if !File.exist?('results')
         # File.open('results/'+fname, 'w') { |f| f.write(xml) }
         render xml: xml, content_type: "attachment/xml"
