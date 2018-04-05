@@ -14,8 +14,13 @@ module HealthDataStandards
         cache_entries = self.where(query_hash)
         aggregate_count = AggregateCount.new(measure_id)
         cache_entries.each do |cache_entry|
-            aggregate_count.add_entry(cache_entry)
+          #Need to modify cache_entries value to be the antinumerator value. This is a Query Cache object
+          Rails.logger.info("Cache Entry is #{cache_entry}")
+          cache_entry.population_ids.each do |pop_type, pop_id|
+            cache_entry[pop_type].value = cache_entry.antinumerator
           end
+          aggregate_count.add_entry(cache_entry)
+        end
         aggregate_count
       end
     end
