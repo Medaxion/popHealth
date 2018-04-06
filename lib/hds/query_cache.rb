@@ -17,7 +17,9 @@ module HealthDataStandards
           #Need to modify cache_entries value to be the antinumerator value. This is a Query Cache object
           Rails.logger.info("Cache Entry is #{cache_entry}")
           cache_entry.population_ids.each do |pop_type, pop_id|
-            cache_entry[pop_type].value = cache_entry.antinumerator
+            Rails.logger.info("Setting cache_entry #{pop_type} to #{cache_entry.antinumerator}")
+            cache_entry[pop_type] = cache_entry.antinumerator
+            Rails.logger.info("Cache_entry #{pop_type} is now #{cache_entry[pop_type]}")
           end
           aggregate_count.add_entry(cache_entry)
         end
