@@ -79,15 +79,7 @@ module Api
           provider_filter['filters.providers'] = params[:provider_id] if params[:provider_id].present?
         end
 
-        Rails.logger.info("Cat 3 Version is #{cat3ver}")
-        Rails.logger.info("Effective Date is #{effective_date}")
-        Rails.logger.info("Effective Start Date is #{Time.at(effective_start_date.to_i)}")
-        Rails.logger.info("End Date #{end_date}")
-        Rails.logger.info("Provider Filter #{provider_filter}")
-        Rails.logger.info("Filter #{filter}")
-        Rails.logger.info("Providers #{providers}")
         measures = HealthDataStandards::CQM::Measure.top_level.where(filter)
-        Rails.logger.info("Measures are #{measures}")
 
         xml = exporter.export(HealthDataStandards::CQM::Measure.top_level.where(filter),
                               generate_header(providers),
@@ -98,21 +90,12 @@ module Api
                               provider_filter)
 
         measure = measures.first
-        Rails.logger.info("Measure is #{measure}")
         results = {}
         results[measure['hqmf_id']] = HealthDataStandards::CQM::QueryCache.aggregate_measure(measure['hqmf_id'], effective_date, nil, nil)
         result = results[measure['hqmf_id']]
-        Rails.logger.info("Result is #{result}")
         populations = result.populations
-        Rails.logger.info("Populations are #{populations}")
-
-        populations.each do |population|
-          "Value is #{population.value}"
-          "Rounded Value is #{population.value.round}"
-        end
 
         measure_id = measure['hqmf_id']
-        Rails.logger.info("Measure Id is #{measure_id}")
 
         #This comes from QueryCache.aggregate_measure
         aggregate_count = HealthDataStandards::CQM::AggregateCount.new(measure_id)
@@ -121,11 +104,9 @@ module Api
         aggregate_count = HealthDataStandards::CQM::AggregateCount.new(measure_id)
 
         cache_entries.each do |cache_entry|
-          Rails.logger.info("Adding cache_entry #{cache_entry}")
+          Rails.logger.info("Adding cache_entry #{cache_entry.inspect}")
           aggregate_count.add_entry(cache_entry)
         end
-
-        Rails.logger.info("Aggregate Count is #{aggregate_count}")
 
         # FileUtils.mkdir('results') if !File.exist?('results')
         # File.open('results/'+fname, 'w') { |f| f.write(xml) }
